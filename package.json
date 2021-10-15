@@ -1,0 +1,35 @@
+{
+  "name": "ricardian",
+  "version": "1.0.0",
+  "description": "> [DOCS](https://ricardian.gitbook.io/ricardian-llc/) 📕 [ARTICLE](https://medium.com/lexdaoism/ricardian-llc-limited-liability-nft-f64a162f751b) An entirely on-chain representation of limited liability companies minted as NFTs, governed by [LexDAO](https://twitter.com/lex_DAO) as a public good for ethereum business. The name and concept of Ricardian LLC is inspired by \"[ricardian contracts](https://en.wikipedia.org/wiki/Ricardian_contract)\", *i.e.*, agreements that are recorded with legal and code-based efficacy.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "dev": "NODE_OPTIONS='--inspect' next dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lexDAO/Ricardian.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lexDAO/Ricardian/issues"
+  },
+  "homepage": "https://github.com/lexDAO/Ricardian#readme",
+  "dependencies": {
+    "fs-extra": "^10.0.0",
+    "ganache-cli": "^6.12.2",
+    "hardhat": "^2.6.5",
+    "mocha": "^9.1.2",
+    "next": "^11.1.2",
+    "next-routes": "^1.4.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.4",
+    "solc": "^0.8.0",
+    "truffle-hdwallet-provider": "^1.0.17",
+    "web3": "^1.6.0"
+  }
+}
