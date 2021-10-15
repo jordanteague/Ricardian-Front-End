@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Table, Button } from "semantic-ui-react";
 import instance from "../instance.js";
 import Layout from "../components/Layout";
-//import Layout from "../components/Layout";
 import { Link } from "../routes";
 
 class RicardianLLC extends Component {
@@ -47,6 +46,7 @@ class RicardianLLC extends Component {
 
     for(var i = 0; i < totalSupply; i++) {
       llcs[i] = {
+          "tokenId": i + 1,
           "owner": ownerOf[i],
           "tokenDetails": tokenDetails[i],
           "tokenURI": tokenURI[i],
@@ -68,16 +68,14 @@ class RicardianLLC extends Component {
         <Row>
           <Cell>
             <Link route={llc["tokenURI"].toString()}>
-              <a>{index + 1}</a>
+              <a>{llc["tokenId"]}</a>
             </Link>
           </Cell>
           <Cell>{llc["owner"]}</Cell>
           <Cell>{llc["tokenDetails"]}</Cell>
           <Cell>{llc["buyer"]}</Cell>
           <Cell>{llc["price"]}</Cell>
-          <Cell>
-              <Button icon="edit outline icon" />
-          </Cell>
+          <Cell><Button icon="edit outline icon" /></Cell>
         </Row>
       );
     });
