@@ -3,7 +3,7 @@ import { Table, Button } from "semantic-ui-react";
 import instance from "../instance.js";
 import Layout from "../components/Layout";
 //import Layout from "../components/Layout";
-//import { Link } from "../routes";
+import { Link } from "../routes";
 
 class RicardianLLC extends Component {
 
@@ -11,7 +11,7 @@ class RicardianLLC extends Component {
 
     const totalSupply = parseInt(await instance.methods.totalSupply().call());
 
-    const owners = await Promise.all(
+    const ownerOf = await Promise.all(
       Array(parseInt(totalSupply))
         .fill()
         .map((element, index) => {
@@ -27,30 +27,57 @@ class RicardianLLC extends Component {
         })
     );
 
+    const tokenURI = await Promise.all(
+      Array(parseInt(totalSupply))
+        .fill()
+        .map((element, index) => {
+          return instance.methods.tokenURI(index + 1).call();
+        })
+    );
+
+    const sale = await Promise.all(
+      Array(parseInt(totalSupply))
+        .fill()
+        .map((element, index) => {
+          return instance.methods.sale(index + 1).call();
+        })
+    );
+
     const llcs = [];
 
     for(var i = 0; i < totalSupply; i++) {
-      llcs[i] = {"owner": owners[i], "tokenDetails": tokenDetails[i]};
+      llcs[i] = {
+          "owner": ownerOf[i],
+          "tokenDetails": tokenDetails[i],
+          "tokenURI": tokenURI[i],
+          "buyer": sale[i]["buyer"],
+          "price": sale[i]["price"]
+        };
     }
 
-    console.log(llcs);
-
-    return { totalSupply, owners, tokenDetails, llcs };
+    return { totalSupply, llcs };
 
   }
 
   renderRows() {
     const { Row, Cell } = Table;
-    const owners = this.props.owners;
     const llcs = this.props.llcs;
 
     return this.props.llcs.map((llc, index) => {
       return (
         <Row>
-          <Cell>{index + 1}</Cell>
+          <Cell>
+            <Link route={llc["tokenURI"].toString()}>
+              <a>{index + 1}</a>
+            </Link>
+          </Cell>
           <Cell>{llc["owner"]}</Cell>
-          <Cell>{llc["details"]}</Cell>
-          <Cell><i class="edit outline icon"></i></Cell>
+          <Cell>{llc["tokenDetails"]}</Cell>
+          <Cell>{llc["buyer"]}</Cell>
+          <Cell>{llc["price"]}</Cell>
+          <Cell>
+              <Button icon="edit outline icon" />
+          </Cell>
         </Row>
       );
     });
@@ -64,17 +91,20 @@ class RicardianLLC extends Component {
         <Layout>
         <h3>LLCs</h3>
 
-        <Table>
+        <Table style={{ overflow: 'auto', display: 'inline-block', maxHeight: 'inherit', }}>
           <Header>
             <Row>
               <HeaderCell>ID</HeaderCell>
               <HeaderCell>Owner</HeaderCell>
               <HeaderCell>Details</HeaderCell>
+              <HeaderCell>Pending Buyer</HeaderCell>
+              <HeaderCell>Price</HeaderCell>
               <HeaderCell>Edit</HeaderCell>
             </Row>
           </Header>
           <Body>{this.renderRows()}</Body>
         </Table>
+
         <div>Found {this.props.totalSupply} LLCs.</div>
         </Layout>
     );
